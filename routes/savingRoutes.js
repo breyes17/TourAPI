@@ -1,10 +1,16 @@
 const express = require('express');
+const {
+  getAllSavings,
+  addSaving,
+  deleteSaving,
+  updateSaving,
+  checkBody,
+} = require('../controller/savingController');
 
 const router = express.Router();
 
-exports.getAllSavings = (req, res, next) => {
-  res.status(200).json({
-    status: 'Success',
-    message: 'get all savings data',
-  });
-};
+router.route('/').get(getAllSavings).post(checkBody, addSaving);
+
+router.route('/:id').patch(updateSaving).delete(deleteSaving);
+
+module.exports = router;
