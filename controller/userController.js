@@ -1,11 +1,22 @@
-exports.addUser = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-    data: {
-      username: req.body.username,
-      name: req.body.name,
-    },
-  });
+const { UserModel } = require('../model/userModel');
+
+exports.addUser = async (req, res) => {
+  try {
+    const user = await UserModel.create(req.body);
+    res.status(201).json({
+      status: 1,
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 0,
+      data: {
+        error,
+      },
+    });
+  }
 };
 
 exports.getUser = (req, res) => {
@@ -40,13 +51,13 @@ exports.updateUser = (req, res) => {
   });
 };
 
-exports.checkUserDetails = (req, res, next) => {
-  if (!req.body.name) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Name is required',
-    });
-  }
+// exports.checkUserDetails = (req, res, next) => {
+//   if (!req.body.name) {
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'Name is required',
+//     });
+//   }
 
-  next();
-};
+//   next();
+// };
